@@ -1,0 +1,16 @@
+version: "3"
+services:
+  hazelcast-1:
+    image: hazelcast/hazelcast:5.0-slim
+    ports:
+      - "5702:5701"
+  hazelcast-2:
+    image: hazelcast/hazelcast:5.0-slim
+    ports:
+      - "5703:5701"
+  management-center:
+    image: hazelcast/management-center:5.0
+    environment:
+      - MC_INIT_CMD=./bin/mc-conf.sh cluster add -H=/data -ma hazelcast-1:5701,hazelcast-2:5701 -cn dev
+    ports:
+      - "8180:8080"
